@@ -1,0 +1,39 @@
+#load "str.cma";;
+module PolishCalculator =
+	struct
+		type expr= {num:int; op:string}
+		
+    (*this function recognize +,-,*,/,** *)
+		let evaluatelist x list=
+			let evaluate x expr= match expr with
+			| {num; op="+"} -> x+num
+			| {num; op="*"} -> x*num
+			| {num; op="**"} -> int_of_float(float_of_int x**float_of_int num)
+			| {num; op="/"} -> x/num	
+			| {num; op="-"} -> x-num			
+			| _ -> raise (Invalid_argument "Unknown operator or missing argument.")
+			in
+			let rec eval x = function
+				| [] -> x
+				| h::tl -> eval (evaluate x h) tl in
+			eval x list
+
+
+				
+		(*da lista di stringhe a lista di expr*)
+		let fste string=
+			let stringlist = Str.split (Str.regexp "[ \t]+") string			
+			and
+		  cexp h s= {num=int_of_string h;op= s} 
+			in			
+			let rec listofexp acc = function
+				| [] -> acc
+				| h::s::tl -> listofexp ((cexp h s)::acc) tl
+				| _::[] -> acc
+				in
+				List.rev (listofexp [] stringlist) 
+	end 
+	
+	(*this function take a first number to calculate on and a string on format "3 + 4 / 5 * 6 +", with spaces between char*)
+	let calculate firstnum str = PolishCalculator.evaluatelist firstnum (PolishCalculator.fste str)
+	
