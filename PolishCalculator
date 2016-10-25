@@ -3,7 +3,7 @@ module PolishCalculator =
 	struct
 		type expr= {num:int; op:string}
 		
-    (*this function recognize +,-,*,/,** *)
+	(*this function recognize +,-,*,/,** *)
 		let evaluatelist x list=
 			let evaluate x expr= match expr with
 			| {num; op="+"} -> x+num
@@ -20,7 +20,7 @@ module PolishCalculator =
 
 
 				
-		(*da lista di stringhe a lista di expr*)
+	(*from string to exprlist*)
 		let fste string=
 			let stringlist = Str.split (Str.regexp "[ \t]+") string			
 			and
