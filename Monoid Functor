@@ -1,0 +1,40 @@
+
+(*A monoid is an algebraic structure consisting of a set together with a single associative binary 
+operation and an identity element. E.g., the set of booleans with the or operator is a monoid whose identity is false. *)
+
+
+module type OPERATIONTYPE =
+	sig
+		type a and b 
+		val op: a -> a -> a
+		val identity : a
+	end;;
+
+
+(*functor that take a concrete module and verify if it is a Monoid*)
+module Monoid (OP: OPERATIONTYPE)=
+	struct
+		let rec verifyidentity = function
+			| [h]->OP.op h OP.identity =h
+			| h::tl -> OP.op h (OP.identity)=h && verifyidentity tl
+		
+		let verifyassoc = function
+			| [h]-> true
+			|	f::s::t::tl -> OP.op (OP.op f s) t = OP.op f (OP.op s t) && verifyassoc tl	
+	end;;
+
+
+(*examples of monoid*)
+module SumInt = 
+	struct
+		type a=int and b=int list
+		let op = fun x y -> x+y
+		let identity = 0 
+	end;;
+
+module Orbool=
+	struct
+		type a=bool and b=bool list
+		let op= fun x y -> x || y
+		let identity = false
+	end;;
