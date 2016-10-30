@@ -18,7 +18,7 @@ module Monoid (OP: OPERATIONTYPE)=
 			| [h]->OP.op h OP.identity =h
 			| h::tl -> OP.op h (OP.identity)=h && verifyidentity tl
 		
-		let verifyassoc = function
+		let rec verifyassoc = function
 			| [h]-> true
 			|	f::s::t::tl -> OP.op (OP.op f s) t = OP.op f (OP.op s t) && verifyassoc tl	
 	end;;
